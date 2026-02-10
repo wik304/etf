@@ -55,8 +55,8 @@ def check_market():
         send_telegram_message(full_message)
     else:
         # Opcjonalnie: odkomentuj linię niżej, jeśli chcesz dostawać raport codziennie nawet jak nie ma okazji
-        # send_telegram_message("Spokój na rynku. Żaden ETF nie jest na dołku (RSI > 40).")
-        pass
+        send_telegram_message("Spokój na rynku. Żaden ETF nie jest na dołku (RSI > 40).")
+        # pass
 
 if __name__ == "__main__":
     if TOKEN and CHAT_ID:
