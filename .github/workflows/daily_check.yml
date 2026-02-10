@@ -1,0 +1,29 @@
+name: Sprawdzanie ETFów
+
+on:
+  schedule:
+    # Uruchom codziennie o 09:00 UTC (czyli ok. 10:00 lub 11:00 w Polsce)
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Pozwala też uruchomić ręcznie przyciskiem w zakładce Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v3
+
+      - name: Zainstaluj Pythona
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Zainstaluj biblioteki
+        run: pip install pandas yfinance requests
+
+      - name: Uruchom skrypt
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python powiadomienia.py
