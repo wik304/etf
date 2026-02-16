@@ -8,7 +8,9 @@ st.title("📊 Analiza ETF XTB")
 tickers = {
     "Rynki Wschodzące (EIMI)": "EIMI.L",
     "Cały Świat (ISAC)": "ISAC.L",
-    "Polska Małe (sWIG80)": "ETFBS80TR.WA"
+    "Polska Małe (sWIG80)": "ETFBS80TR.WA",
+    "Polska Średnie (mWIG40)": "ETFBM40TR.WA",
+    "Polska Duże (WIG20)": "ETFBW20TR.WA"
 }
 
 def oblicz_rsi(series, period=14):
