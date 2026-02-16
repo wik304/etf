@@ -67,9 +67,12 @@ if st.button('Pobierz i Analizuj Dane'):
     # Wyświetlanie tabeli
     if wyniki:
         df = pd.DataFrame(wyniki)
+
+        # Sortowanie od najniższego RSI (najlepsze okazje na górze)
+        df = df.sort_values(by="RSI", ascending=True)
         
         # Kolorowanie tabeli (opcjonalne, proste wyświetlenie)
-        st.dataframe(df, hide_index=True)
+        st.dataframe(df, hide_index=True, use_container_width=True)
         
         # Podświetlenie najlepszej opcji
         najlepszy = df.sort_values(by="RSI").iloc[0]
