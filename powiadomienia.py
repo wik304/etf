@@ -12,10 +12,13 @@ chat_id_raw = os.environ.get("TELEGRAM_CHAT_ID")
 TOKEN = token_raw.strip() if token_raw else None
 CHAT_ID = chat_id_raw.strip() if chat_id_raw else None
 
+# Zaktualizowana lista tickerów
 tickers = {
     "Rynki Wschodzące (EIMI)": "EIMI.L",
     "Cały Świat (ISAC)": "ISAC.L",
-    "Polska Małe (sWIG80)": "ETFBS80TR.WA"
+    "Polska Małe (sWIG80)": "ETFBS80TR.WA",
+    "Polska Średnie (mWIG40)": "ETFBM40TR.WA",
+    "Polska Duże (WIG20)": "ETFBW20TR.WA"
 }
 
 def send_telegram_message(message):
@@ -59,6 +62,10 @@ def check_market():
             else:
                 close = data['Close']
             
+            # Upewnienie się, że close to Series, a nie DataFrame (zabezpieczenie)
+            if isinstance(close, pd.DataFrame):
+                close = close[symbol]
+            
             # Obliczenie RSI
             delta = close.diff(1)
             gain = delta.where(delta > 0, 0)
@@ -70,8 +77,9 @@ def check_market():
             rs = avg_gain / avg_loss
             rsi = 100 - (100 / (1 + rs))
             
-            current_rsi = rsi.iloc[-1]
-            current_price = close.iloc[-1]
+            # Pobranie konkretnych wartości liczbowych
+            current_rsi = rsi.iloc[-1].item() if hasattr(rsi.iloc[-1], 'item') else rsi.iloc[-1]
+            current_price = close.iloc[-1].item() if hasattr(close.iloc[-1], 'item') else close.iloc[-1]
             
             print(f"-> Cena: {current_price:.2f}, RSI: {current_rsi:.2f}")
 
